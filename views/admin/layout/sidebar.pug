@@ -1,0 +1,55 @@
+aside.main-sidebar
+  // sidebar: style can be found in sidebar.less
+  section.sidebar
+    // Sidebar user panel
+    .user-panel
+      .pull-left.image
+        img.img-circle(src='/AdminLTE/dist/img/user2-160x160.jpg', alt='User Image')
+      .pull-left.info
+        p #{name}
+        a สถานะ : ผู้ดูแลระบบ
+    // sidebar menu: : style can be found in sidebar.less
+    ul.sidebar-menu(data-widget='tree')
+      li.header เมนูหลัก
+      li
+      li
+        a(href='/admin')
+          i.fa.fa-shopping-cart
+          span ยืมจักรยาน
+      li
+      li
+        a(href='/admin/brList')
+          i.fa.fa-cart-arrow-down
+          span รายการที่ถูกยืม
+      li
+      li
+        a(href='/admin/mngBic')
+          i.fa.fa-bicycle
+          span จัดการจักรยาน
+      li.treeview
+        a(href="#")
+          i.fa.fa-users
+          |  
+          span จัดการผู้ใช้
+          |             
+          span.pull-right-container
+            i.fa.fa-angle-left.pull-right
+        |           
+        ul.treeview-menu
+          li
+            a(href="/admin/mngUser")
+              i.fa.fa-circle-o
+              |  ผู้ใช้ทั่วไป
+          li
+            a(href="/admin/mngAdmin")
+              i.fa.fa-circle-o
+              |  ผู้ดูแลระบบ
+      li
+      li
+        a(href='/admin/history')
+          i.fa.fa-clock-o
+          span ประวัติการยืม
+      li
+        a(href='/admin/profile')
+          i.fa.fa-user
+          span แก้ไขโปรไฟล์

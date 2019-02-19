@@ -1,0 +1,174 @@
+extends layout/base 
+block content
+	section.content-header
+		h1
+			| 
+			small 
+		ol.breadcrumb
+			li
+				a(href='#')
+					i.fa.fa-dashboard
+					| ผู้ดูแลระบบ
+			li
+				| จัดการผู้ใช้
+			li.active ผู้ใช้ทั่วไป
+	section.content
+		if (messages.error) 
+			.alert.alert-danger
+				a.close(href="#", data-dismiss="alert", aria-label="close") ×
+				strong มีบางอย่างผิดพลาด!
+				span= messages.error
+		if (messages.success) 
+			.alert.alert-success
+				a.close(href="#", data-dismiss="alert", aria-label="close") ×
+				strong สำเร็จ!
+				span= messages.success
+		.box
+			.box-body
+				.row
+					.col-12
+						a#addUserButton.btn.btn-primary.btn-flat
+							i.fa.fa-plus-square
+							|  เพิ่มผู้ใช้
+				br
+				table#tableMngUser.table.table-bordered.table-hover
+					thead
+						tr
+							th รหัสนักศึกษา
+							th ชื่อ
+							th สกุล
+							th เบอร์
+							th อีเมลล์
+							th สาขา
+							th สถานะ
+							th สถานะ
+							th ทำรายการ
+					for val in data
+						tr
+							td #{val.user_id}
+							td #{val.fname}
+							td #{val.lname}
+							td #{val.phone}
+							td #{val.email}
+							td #{val.department}
+							td 
+								if val.status == 1
+									.label.label-success ปกติ
+								else
+									.label.label-danger ถูกปิดกั้น
+							td #{val.status}
+							td
+								a#edit.btn.btn-primary
+									i.fa.fa-edit
+								|		
+								a#del.btn.btn-danger
+									i.fa.fa-close
+					tfoot
+						tr
+							th รหัสนักศึกษา
+							th ชื่อ
+							th สกุล
+							th เบอร์
+							th อีเมลล์
+							th สาขา
+							th สถานะ
+							th สถานะ
+							th ทำรายการ
+	#editUser.modal.fade(tabindex="-1", role="dialog", aria-labelledby="exampleModalLabel", aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+					|                     
+					h4.modal-title แก้ไขข้อมูลผู้ใช้งาน
+				|
+				form(method="post", action="/admin/mngUser/edit")
+					.modal-body
+						.form-group
+							label(for="uIdMngUser") รหัสนักศึกษา
+							input#uIdMngUser.form-control(type="text", name="uIdMngUser", placeholder="รหัสนักศึกษา" readonly)
+						.form-group
+							label(for="fnameMngUser") ชื่อ
+							input#fnameMngUser.form-control(type="text", name="fnameMngUser", placeholder="ชื่อ", required)
+						.form-group
+							label(for="lnameMngUser") สกุล
+							input#lnameMngUser.form-control(type="text", name="lnameMngUser", placeholder="สกุล", required)
+						.form-group
+							label(for="phonMngUser") เบอร์
+							input#phonMngUser.form-control(type="text", name="phonMngUser", placeholder="เบอร์", data-inputmask='"mask": "099-999-9999"', data-mask, required)
+						.form-group
+							label(for="emailMngUser") อีเมลล์
+							input#emailMngUser.form-control(type="email", name="emailMngUser", placeholder="อีเมลล์", required)
+						.form-group
+							label(for="departmentMngUser") สาขา
+							select#departmentMngUser(name="departmentMngUser", required).form-control
+								option(value='เทคโนโลยีสารสนเทศ') เทคโนโลยีสารสนเทศ
+								option(value='วิจัยและพัฒนาผลิตภัณฑ์อาหารฮาลาล') วิจัยและพัฒนาผลิตภัณฑ์อาหารฮาลาล
+						.form-group
+							label(for="statusMngUser", required) สถานะ
+							select#statusMngUser(name="statusMngUser").form-control
+									option(value='1') ปกติ
+									option(value='0') ถูกปิดกั้น 
+					.modal-footer
+						button.btn.btn-default.pull-left(type="button", data-dismiss="modal") ยกเลิก
+						|         
+						button.btn.btn-primary(type="submit") ยืนยัน
+
+	#delUser.modal.fade.modal-danger(tabindex="-1", role="dialog", aria-labelledby="exampleModalLabel", aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+					|                     
+					h4.modal-title ลบข้อมูลจักรยาน
+				|
+				form(method="post", action="/admin/mngUser/del")
+					.modal-body
+						input#uIdDelMngUser(type="text", name="uIdDelMngUser", hidden)
+						.text-center กรุณายืนยันการลบข้อมูลผู้ใช้
+							| <br>(ข้อมูลการยืมจะถูกลบออกไปด้วย)
+					.modal-footer
+						button.btn.btn-default.pull-left(type="button", data-dismiss="modal") ยกเลิก
+						|         
+						button.btn.btn-primary(type="submit") ยืนยัน
+						
+	#addUser.modal.fade(tabindex="-1", role="dialog", aria-labelledby="exampleModalLabel", aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+					|                     
+					h4.modal-title แก้ไขข้อมูลผู้ใช้งาน
+				|
+				form(method="post", action="/admin/mngUser/add")
+					.modal-body
+						.form-group
+							label(for="uIdMngUserAdd") รหัสนักศึกษา
+							input#uIdMngUserAdd.form-control(type="text", name="uIdMngUserAdd", placeholder="รหัสนักศึกษา" required)
+						.form-group
+							label(for="fnameMngUserAdd") ชื่อ
+							input#fnameMngUserAdd.form-control(type="text", name="fnameMngUserAdd", placeholder="ชื่อ" required)
+						.form-group
+							label(for="lnameMngUserAdd") สกุล
+							input#lnameMngUserAdd.form-control(type="text", name="lnameMngUserAdd", placeholder="สกุล" required)
+						.form-group
+							label(for="phonMngUserAdd") เบอร์
+							input#phonMngUserAdd.form-control(type="text", name="phonMngUserAdd", placeholder="เบอร์", data-inputmask='"mask": "099-999-9999"', data-mask, required)
+						.form-group
+							label(for="emailMngUserAdd") อีเมลล์
+							input#emailMngUserAdd.form-control(type="email", name="emailMngUserAdd", placeholder="อีเมลล์" required)
+						.form-group
+							label(for="departmentMngUserAdd") สาขา
+							select#departmentMngUserAdd(name="departmentMngUserAdd" required).form-control
+								option(value='', disabled='', selected='') กรุณาเลือกสาขา
+								option(value='เทคโนโลยีสารสนเทศ') เทคโนโลยีสารสนเทศ
+								option(value='วิจัยและพัฒนาผลิตภัณฑ์อาหารฮาลาล') วิจัยและพัฒนาผลิตภัณฑ์อาหารฮาลาล
+						.form-group
+							label(for="statusMngUserAdd") สถานะ
+							select#statusMngUserAdd(name="statusMngUserAdd" required).form-control
+									option(value='1') ปกติ
+									option(value='0') ถูกปิดกั้น 
+					.modal-footer
+						button.btn.btn-default.pull-left(type="button", data-dismiss="modal") ยกเลิก
+						|         
+						button.btn.btn-primary(type="submit") ยืนยัน

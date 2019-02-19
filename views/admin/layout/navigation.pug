@@ -1,0 +1,40 @@
+header.main-header
+      a.logo(href='#')
+        // mini logo for sidebar mini 50x50 pixels
+        span.logo-mini
+          b F
+          | ST
+        // logo for regular state and mobile devices
+        span.logo-lg
+          b Bicycle
+          | system
+      // Header Navbar
+      nav.navbar.navbar-static-top(role='navigation')
+        // Sidebar toggle button
+        a.sidebar-toggle(href='#', data-toggle='push-menu', role='button')
+          span.sr-only Toggle navigation
+        // Navbar Right Menu
+        .navbar-custom-menu
+          ul.nav.navbar-nav            
+            li.dropdown.user.user-menu
+              // Menu Toggle Button
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                // The user image in the navbar
+                img.user-image(src='/AdminLTE/dist/img/user2-160x160.jpg', alt='User Image')
+                // hidden-xs hides the username on small devices so only the image appears.
+                span.hidden-xs #{name}
+              |             
+              ul.dropdown-menu
+                // The user image in the menu
+                li.user-header
+                  img.img-circle(src='/AdminLTE/dist/img/user2-160x160.jpg', alt='User Image')
+                  |                 
+                  p
+                    | #{name}
+                    small #{department}
+                li.user-footer
+                  .pull-left
+                    a.btn.btn-default.btn-flat(href='#') Profile
+                  |                 
+                  .pull-right
+                    a.btn.btn-default.btn-flat(href='/logout') Sign out

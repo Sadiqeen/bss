@@ -1,0 +1,76 @@
+extends layout/base 
+block content
+	section.content-header
+		h1
+			|
+			small 
+		ol.breadcrumb
+			li
+				a(href='#')
+					i.fa.fa-dashboard
+					| ผู้ดูแลระบบ
+			li.active รายการที่ถูกยืม
+	section.content
+		if (messages.error) 
+			.alert.alert-danger
+				a.close(href="#", data-dismiss="alert", aria-label="close") ×
+				strong มีบางอย่างผิดพลาด!
+				span= messages.error
+		.box
+			.box-body
+				table#tableBrList.table.table-bordered.table-hover
+					thead
+						tr
+							th รหัสนักศึกษา
+							th เลขตัวถัง
+							th วันยืม
+							th ต้องคืนภายใน
+							th สถานะ
+							th ทำรายการ
+					for val in data
+						tr
+							td
+								if  (val.position == 1)
+									a(href="/admin/mngAdmin/?id=" + val.user_id, target="_blank") #{val.user_id}
+								else
+									a(href="/admin/mngUser/?id=" + val.user_id, target="_blank") #{val.user_id}
+							td
+								a(href="/admin/mngBic/?id=" + val.b.bId, target="_blank") #{val.b.bId}
+							td #{val.r.br_date}
+							td #{val.r.re_date}
+							td
+								if val.r.status == 1
+									.label.label-success รอเวลาคืน
+								else if val.r.status == 2
+									.label.label-info ใกล้กำหนดคืน
+								else if val.r.status == 3
+									.label.label-warning ถึงกำหนดคืน
+								else if val.r.status == 4
+									.label.label-danger เลยกำหนด
+							td
+								a(href="/admin/re/" + val.b.bId + "/" + val.user_id).btn.btn-primary คืนจักรยาน
+					tfoot
+						tr
+							th รหัสนักศึกษา
+							th เลขตัวถัง
+							th วันยืม
+							th ต้องคืนภายใน
+							th สถานะ
+							th ทำรายการ
+	#askUserId.modal.fade(tabindex="-1", role="dialog", aria-labelledby="exampleModalLabel", aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+					|                     
+					h4.modal-title กรอกรหัสนักศึกษา
+				|       
+				.modal-body
+					form(method="post", action="br")
+						.form-group
+							input#bId(name="bId" hidden)
+							input#uId.form-control(type="text", name="uId", placeholder="กรอกรหัสนักศึกษา")
+				.modal-footer
+					button.btn.btn-default.pull-left(type="button", data-dismiss="modal") ยกเลิก
+					|         
+					button.btn.btn-primary(type="button") ยืนยัน

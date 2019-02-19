@@ -1,0 +1,74 @@
+extends layout/base 
+block content
+	section.content-header
+		h1
+			| 
+			small 
+		ol.breadcrumb
+			li
+				a(href='#')
+					i.fa.fa-dashboard
+					| ผู้ดูแลระบบ
+			li.active ประวัติการยืม
+	section.content
+		if (messages.success) 
+			.alert.alert-success
+				a.close(href="#", data-dismiss="alert", aria-label="close") ×
+				strong สำเร็จ!
+				span= messages.success
+		if (messages.error) 
+			.alert.alert-danger
+				a.close(href="#", data-dismiss="alert", aria-label="close") ×
+				strong มีบางอย่างผิดพลาด!
+				span= messages.error
+		.box
+			.box-body
+				table#tableHistory.table.table-bordered.table-hover
+					thead
+						tr
+							th รหัสนักศึกษา
+							th เลขตัวถัง
+							th วันที่ยืม
+							th วันที่คืน
+							th สถานะ
+					for val in data
+						tr
+							//- td #{val.user_id}
+							td
+								if  (val.position == 1)
+									a(href="/admin/mngAdmin/?id=" + val.user_id, target="_blank") #{val.user_id}
+								else
+									a(href="/admin/mngUser/?id=" + val.user_id, target="_blank") #{val.user_id}
+							td
+								a(href="/admin/mngBic/?id=" + val.bic.bId, target="_blank") #{val.bic.bId}
+							td #{val.borrow.br_date}
+							td #{val.borrow.re_date}
+							td
+								if val.borrow.status == 1
+									.label.label-success คืนตรงเวลา
+								else
+									.label.label-danger เลยกำหนด
+					tfoot
+						tr
+							th รหัสนักศึกษา
+							th เลขตัวถัง
+							th วันที่ยืม
+							th วันที่คืน
+							th สถานะ
+	#askUserId.modal.fade(tabindex="-1", role="dialog", aria-labelledby="exampleModalLabel", aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+					|                     
+					h4.modal-title กรอกรหัสนักศึกษา
+				|
+				form(method="post", action="/admin/br")
+					.modal-body
+							.form-group
+								input#bId(name="bId" hidden)
+								input#uId.form-control(type="text", name="uId", placeholder="กรอกรหัสนักศึกษา")
+					.modal-footer
+						button.btn.btn-default.pull-left(type="button", data-dismiss="modal") ยกเลิก
+						|         
+						button.btn.btn-primary(type="submit") ยืนยัน

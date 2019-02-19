@@ -1,0 +1,65 @@
+extends layout/base 
+block content
+	section.content-header
+		h1
+			| 
+			small 
+		ol.breadcrumb
+			li
+				a(href='#')
+					i.fa.fa-dashboard
+					| ผู้ดูแลระบบ
+			li.active ยืมจักยาน
+	section.content
+		if (messages.success) 
+			.alert.alert-success
+				a.close(href="#", data-dismiss="alert", aria-label="close") ×
+				strong สำเร็จ!
+				span= messages.success
+		if (messages.error) 
+			.alert.alert-danger
+				a.close(href="#", data-dismiss="alert", aria-label="close") ×
+				strong มีบางอย่างผิดพลาด!
+				span= messages.error
+		.box
+			.box-body
+				table#table.table.table-bordered.table-hover
+					thead
+						tr
+							th เลขตัวถัง
+							th สีตัวถัง
+							th ประเภท
+							th ทำรายการ
+					for val in data
+						tr
+							td #{val.bId}
+							td #{val.color}
+							td #{val.type.name}
+							td
+								if val.status == 0
+									button#br.btn.btn-success ทำรายการ
+								else
+									button.btn.btn-danger อยู่ระหว่างการยืม
+					tfoot
+						tr
+							th เลขตัวถัง
+							th สีตัวถัง
+							th ประเภท
+							th ทำรายการ
+	#askUserId.modal.fade(tabindex="-1", role="dialog", aria-labelledby="exampleModalLabel", aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+					|                     
+					h4.modal-title กรอกรหัสนักศึกษา
+				|
+				form(method="post", action="/admin/br")
+					.modal-body
+							.form-group
+								input#bId(name="bId" hidden)
+								input#uId.form-control(type="text", name="uId", placeholder="กรอกรหัสนักศึกษา")
+					.modal-footer
+						button.btn.btn-default.pull-left(type="button", data-dismiss="modal") ยกเลิก
+						|         
+						button.btn.btn-primary(type="submit") ยืนยัน

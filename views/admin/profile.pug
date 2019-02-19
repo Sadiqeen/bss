@@ -1,0 +1,71 @@
+extends layout/base 
+block content
+	section.content-header
+		h1
+			| 
+			small 
+		ol.breadcrumb
+			li
+				a(href='#')
+					i.fa.fa-dashboard
+					| ผู้ดูแลระบบ
+			li.active แก้ไขโปรไฟล์
+	section.content
+		if (messages.error) 
+			.alert.alert-danger
+				a.close(href="#", data-dismiss="alert", aria-label="close") ×
+				strong มีบางอย่างผิดพลาด!
+				span= messages.error
+		if (messages.success) 
+			.alert.alert-success
+				a.close(href="#", data-dismiss="alert", aria-label="close") ×
+				strong สำเร็จ!
+				span= messages.success
+		.box
+			.box-body
+					.row
+						.col-md-6
+							form(action="/admin/mngAdmin/edit", method="post")
+								h3 แก้ไขโปรไฟล์
+								hr
+								.form-group
+									label(for="uIdMngUser") รหัสนักศึกษา
+									input#uIdMngUser.form-control(type="text", name="uIdMngUser", placeholder="รหัสนักศึกษา", value=`${data.user_id}` readonly)
+								.form-group
+									label(for="fnameMngUser") ชื่อ
+									input#fnameMngUser.form-control(type="text", name="fnameMngUser", placeholder="ชื่อ", value=`${data.fname}` required)
+								.form-group
+									label(for="lnameMngUser") สกุล
+									input#lnameMngUser.form-control(type="text", name="lnameMngUser", placeholder="สกุล", value=`${data.lname}` required)
+								.form-group
+									label(for="phonMngUser") เบอร์
+									input#phonMngUser.form-control(type="text", name="phonMngUser", placeholder="เบอร์", value=`${data.phone}`, data-inputmask='"mask": "099-999-9999"', data-mask, required)
+								.form-group
+									label(for="emailMngUser") อีเมลล์
+									input#emailMngUser.form-control(type="email", name="emailMngUser", placeholder="อีเมลล์", value=`${data.email}` required)
+								.form-group
+									label(for="departmentMngUser") สาขา
+									select#departmentMngUser(name="departmentMngUser" required).form-control
+										option(value='', disabled='', selected='') กรุณาเลือกสาขา
+										option(value='เทคโนโลยีสารสนเทศ') เทคโนโลยีสารสนเทศ
+										option(value='วิจัยและพัฒนาผลิตภัณฑ์อาหารฮาลาล') วิจัยและพัฒนาผลิตภัณฑ์อาหารฮาลาล
+								.form-group.hidden
+									label(for="statusMngUser") สถานะ
+									select#statusMngUser(name="statusMngUser", value=`${data.status}`).form-control
+											option(value='1') ปกติ
+											option(value='0') ถูกปิดกั้น 
+									input#command.form-control(value="2", name="command", hidden)
+								|
+								button.btn.btn-primary.pull-right(type="submit") อัพเดทโปรไฟล์
+						.col-md-6
+							form(action="/admin/profile/pass", method="post")
+								h3 เปลี่ยนรหัสผ่าน
+								hr
+								.form-group
+									label(for="p1") กรอกรหัสผ่านใหม่
+									input#p1.form-control(type="password", name="p1", placeholder="กรอกรหัสผ่านใหม่", value="" required)
+								.form-group
+									label(for="p2") กรอกรหัสผ่านใหม่อีกครั้ง
+									input#p2.form-control(type="password", name="p2", placeholder="กรอกรหัสผ่านใหม่อีกครั้ง", value="" required)
+								|
+								button.btn.btn-danger.pull-right(type="submit") เปลี่ยนรหัสผ่าน

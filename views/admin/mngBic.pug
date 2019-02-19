@@ -1,0 +1,127 @@
+extends layout/base 
+block content
+	section.content-header
+		h1
+			| 
+			small 
+		ol.breadcrumb
+			li
+				a(href='#')
+					i.fa.fa-dashboard
+					| ผู้ดูแลระบบ
+			li.active จัดการจักรยาน
+	section.content
+		if (messages.error) 
+			.alert.alert-danger
+				a.close(href="#", data-dismiss="alert", aria-label="close") ×
+				strong มีบางอย่างผิดพลาด!
+				span= messages.error
+		if (messages.success) 
+			.alert.alert-success
+				a.close(href="#", data-dismiss="alert", aria-label="close") ×
+				strong สำเร็จ!
+				span= messages.success
+		.box
+			.box-body
+				.row
+					.col-12
+						a#add.btn.btn-primary.btn-flat
+							i.fa.fa-plus-square
+							|  เพิ่มจักรยาน
+				br
+				table#table.table.table-bordered.table-hover
+					thead
+						tr
+							th เลขตัวถัง
+							th สีตัวถัง
+							th ประเภท
+							th ทำรายการ
+					for val in data
+						tr
+							td #{val.bId}
+							td #{val.color}
+							td #{val.type.name}
+							td
+								a#edit.btn.btn-primary
+									i.fa.fa-edit
+								|		
+								a#del.btn.btn-danger
+									i.fa.fa-close
+					tfoot
+						tr
+							th เลขตัวถัง
+							th สีตัวถัง
+							th ประเภท
+							th ทำรายการ
+	#editBic.modal.fade(tabindex="-1", role="dialog", aria-labelledby="exampleModalLabel", aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+					|                     
+					h4.modal-title แก้ไขข้อมูลจักรยาน
+				|
+				form(method="post", action="/admin/mngBic/edit")
+					.modal-body
+						.form-group
+							label(for="bId") เลขตัวถัง
+							input#bId.form-control(type="text", name="bId", placeholder="เลขตัวถัง" readonly)
+						.form-group
+							label(for="color") สีตัวถัง
+							input#color.form-control(type="text", name="color" placeholder="สีตัวถัง" required)
+						.form-group
+							label(for="type") ประเภทจักรยาน
+							select#type(vale="กรุณาเลือกประเภทจักรยาน", name="type").form-control
+								option(value="Normal") Normal
+								option(value="Road Bikes") Road Bikes
+								option(value="Mountain Bikes") Mountain Bikes
+					.modal-footer
+						button.btn.btn-default.pull-left(type="button", data-dismiss="modal") ยกเลิก
+						|         
+						button.btn.btn-primary(type="submit") ยืนยัน
+
+	#delBic.modal.fade.modal-danger(tabindex="-1", role="dialog", aria-labelledby="exampleModalLabel", aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+					|                     
+					h4.modal-title ลบข้อมูลจักรยาน
+				|
+				form(method="post", action="/admin/mngBic/del")
+					.modal-body
+						input#bIdDel(type="text", name="bIdDel", hidden)
+						.text-center กรุณายืนยันการลบข้อมูลจักรยาน
+							| <br>(ข้อมูลการยืมจะถูกลบออกไปด้วย)
+					.modal-footer
+						button.btn.btn-default.pull-left(type="button", data-dismiss="modal") ยกเลิก
+						|         
+						button.btn.btn-primary(type="submit") ยืนยัน
+						
+	#addBic.modal.fade(tabindex="-1", role="dialog", aria-labelledby="exampleModalLabel", aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", aria-hidden="true") ×
+					|                     
+					h4.modal-title แก้ไขข้อมูลจักรยาน
+				|
+				form(method="post", action="/admin/mngBic/add")
+					.modal-body
+						.form-group
+							label(for="bIdadd") เลขตัวถัง
+							input#bIdadd.form-control(type="text", name="bIdadd", placeholder="เลขตัวถัง" required)
+						.form-group
+							label(for="color") สีตัวถัง
+							input#coloradd.form-control(type="text", name="coloradd" placeholder="สีตัวถัง" required)
+						.form-group
+							label(for="type") ประเภทจักรยาน
+							select#typeadd.form-control(name="typeadd", required)
+								option(value='', disabled='', selected='') กรุณาเลือกประเภทจักรยาน
+								option(value="Normal") Normal
+								option(value="Road Bikes") Road Bikes
+								option(value="Mountain Bikes") Mountain Bikes
+					.modal-footer
+						button.btn.btn-default.pull-left(type="button", data-dismiss="modal") ยกเลิก
+						|         
+						button.btn.btn-primary(type="submit") ยืนยัน
